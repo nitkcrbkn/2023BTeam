@@ -4,7 +4,7 @@
 /*NO Device mode*/
 #define _NO_DEVICE 0
 
-#define DD_NUM_OF_MD 2
+#define DD_NUM_OF_MD 4
 #define DD_NUM_OF_AB 0
 #define DD_NUM_OF_SV 0
 

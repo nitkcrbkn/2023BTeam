@@ -15,6 +15,8 @@
 static
 int suspensionSystem(void);
 
+static
+int Suspension(void);
 
 
 /* 腕振り部の変数 */
@@ -96,6 +98,10 @@ int appTask(void){
     return ret;
   }
 
+  ret = Suspension();
+  if(ret){ 
+    return ret;
+  }
 	 
   return EXIT_SUCCESS;
 }
@@ -178,4 +184,30 @@ int suspensionSystem(void){
   return EXIT_SUCCESS;
 }
 
+static
+int Suspension(void){
+  unsigned int idx = 2;
+  int i;
+  int duty = 0;
 
+  const tc_const_t tc ={
+    .inc_con = 100,
+    .dec_con = 225,
+  };
+
+  if(__RC_ISPRESSED_R1(g_rc_data)){
+    duty = 1000;
+  }
+  else if(__RC_ISPRESSED_L1(g_rc_data)){
+    duty = -1000;
+  }
+  else{
+    duty = 0;
+  }
+
+  for(;idx <= 1;i++){
+    trapezoidCtrl(duty, &g_md_h[idx+1],&tc);
+  }
+  
+  return EXIT_SUCCESS;
+}
