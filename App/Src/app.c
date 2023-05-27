@@ -205,7 +205,7 @@ int Suspension(void){
     duty = 0;
   }
 
-  for(i = 0;idx <= 1;i++){
+  for(i = 0;i <= 1;i++){
     trapezoidCtrl(duty, &g_md_h[idx+i],&tc);
   }
   
