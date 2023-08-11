@@ -153,7 +153,7 @@ int suspensionSystem(void){
                 default:
                     return EXIT_FAILURE;
             }
-            for(int j=0;j<=2;j+=2){
+            for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
                 trapezoidCtrl(rc_analogdata * MD_GAIN,&g_md_h[idx+j],&tc);
             }
         }
