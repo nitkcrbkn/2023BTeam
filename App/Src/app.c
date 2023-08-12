@@ -15,6 +15,8 @@
 static
 int suspensionSystem(void);
 
+static
+int OtasukeInclination(void);
 
 
 /* 腕振り部の変数 */
@@ -92,6 +94,11 @@ int appTask(void){
   /*それぞれの機構ごとに処理をする*/
   /*途中必ず定数回で終了すること。*/
   ret = suspensionSystem();
+  if(ret){
+    return ret;
+  }
+
+  ret = OtasukeInclination();
   if(ret){
     return ret;
   }
@@ -178,4 +185,26 @@ int suspensionSystem(void){
   return EXIT_SUCCESS;
 }
 
+static
+int OtasukeInclination(void){
+  unsigned int idx = 2;
+  int i;
+  int duty = 0;
 
+  const tc_const_t tc ={
+    .inc_con = 100,
+    .dec_con = 225,
+  };
+  
+  if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
+    duty = 1000;
+  } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
+    duty = -1000;
+  } else {
+    duty = 0;
+  }
+
+  trapezoidCtrl(duty,&g_md_h[idx],&tc);
+
+  return EXIT_SUCCESS;
+}
