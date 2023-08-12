@@ -169,6 +169,9 @@ int suspensionSystem(void){
                     return EXIT_FAILURE;
             }
             for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
+                if(j==2){
+                    if(rc_analogdata * MD_GAIN == 0)break;
+                }
                 trapezoidCtrl(rc_analogdata * MD_GAIN,&g_md_h[idx+j],&tc);
             }
         }
