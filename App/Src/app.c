@@ -187,7 +187,7 @@ int suspensionSystem(void){
 
 static
 int OtasukeUpDownSystem(void){
-  unsigned int idx;
+  unsigned int idx = 2;
   int i;
   int duty = 0;
 
