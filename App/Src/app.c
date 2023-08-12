@@ -15,6 +15,12 @@
 static
 int suspensionSystem(void);
 
+static
+int forwardWheelLeft(void);
+
+static
+int forwardWheelRight(void);
+
 
 
 /* 腕振り部の変数 */
@@ -96,6 +102,15 @@ int appTask(void){
         return ret;
     }
 
+  ret = forwardWheelLeft();
+  if(ret){
+      return ret;
+  }
+
+    ret = forwardWheelRight();
+    if(ret){
+        return ret;
+    }
 	 
     return EXIT_SUCCESS;
 }
@@ -181,4 +196,49 @@ int suspensionSystem(void){
     return EXIT_SUCCESS;
 }
 
+static
+int forwardWheelLeft(void){
+    unsigned int idx=3;/*インデックス*/
+    const tc_const_t tc ={
+            .inc_con = 100,
+            .dec_con = 225,
+    };
+    int duty=0;
+
+    /*走行中前輪単独駆動はさせない*/
+    if(DD_RCGetLY(g_rc_data)==0){
+        if(__RC_ISPRESSED_L2(g_rc_data)){
+            duty = 1000;
+        }
+        else{
+            duty = 0;
+        }
+        trapezoidCtrl(duty,&g_md_h[idx],&tc);
+    }
+
+    return EXIT_SUCCESS;
+}
+
+static
+int forwardWheelRight(void){
+    unsigned int idx=2;/*インデックス*/
+    const tc_const_t tc ={
+            .inc_con = 100,
+            .dec_con = 225,
+    };
+    int duty=0;
+
+    /*走行中前輪単独駆動はさせない*/
+    if(DD_RCGetRY(g_rc_data)==0){
+        if(__RC_ISPRESSED_R2(g_rc_data)){
+            duty = -1000;
+        }
+        else{
+            duty = 0;
+        }
+        trapezoidCtrl(duty,&g_md_h[idx],&tc);
+    }
+
+    return EXIT_SUCCESS;
+}
 
