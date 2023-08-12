@@ -15,6 +15,9 @@
 static
 int suspensionSystem(void);
 
+static
+int otasukeCatch(void);
+
 
 
 /* 腕振り部の変数 */
@@ -94,6 +97,11 @@ int appTask(void){
   ret = suspensionSystem();
   if(ret){
     return ret;
+  }
+
+  ret = otasukeCatch();
+  if(ret){
+      return ret;
   }
 
 	 
@@ -178,4 +186,28 @@ int suspensionSystem(void){
   return EXIT_SUCCESS;
 }
 
+static
+int otasukeCatch(void){
+    unsigned int idx=2;/*インデックス*/
+    int duty;
+
+    const tc_const_t tc ={
+            .inc_con = 100,
+            .dec_con = 225,
+    };
+
+    if(__RC_ISPRESSED_CIRCLE(g_rc_data)){
+        duty = 1000;
+    }
+    else if(__RC_ISPRESSED_CROSS(g_rc_data)){
+        duty = -1000;
+    }
+    else{
+        duty = 0;
+    }
+
+    trapezoidCtrl(duty,&g_md_h[idx],&tc);
+
+    return EXIT_SUCCESS;
+}
 
