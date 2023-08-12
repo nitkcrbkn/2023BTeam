@@ -169,10 +169,10 @@ int suspensionSystem(void){
                     return EXIT_FAILURE;
             }
             for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
-                if(j==2 && i==0 && __RC_ISPRESSED_L2(g_rc_data)==0){
+                if(j==2 && i==0 && __RC_ISPRESSED_R1(g_rc_data)){
                     break;
                 }
-                else if(j==2  && i==1 && __RC_ISPRESSED_R2(g_rc_data)==0){
+                else if(j==2  && i==1 && __RC_ISPRESSED_L1(g_rc_data)){
                     break;
                 }
                 trapezoidCtrl(rc_analogdata * MD_GAIN,&g_md_h[idx+j],&tc);
@@ -213,7 +213,7 @@ int forwardWheelLeft(void){
 
     /*走行中前輪単独駆動はさせない*/
     if(DD_RCGetLY(g_rc_data)==0){
-        if(__RC_ISPRESSED_L2(g_rc_data)){
+        if(__RC_ISPRESSED_L1(g_rc_data)){
             duty = 1000;
         }
         else{
@@ -236,7 +236,7 @@ int forwardWheelRight(void){
 
     /*走行中前輪単独駆動はさせない*/
     if(DD_RCGetRY(g_rc_data)==0){
-        if(__RC_ISPRESSED_R2(g_rc_data)){
+        if(__RC_ISPRESSED_R1(g_rc_data)){
             duty = -1000;
         }
         else{
