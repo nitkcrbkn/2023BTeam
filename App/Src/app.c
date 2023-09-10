@@ -197,9 +197,9 @@ int OtasukeUpDownSystem(void){
   };
 
   if(__RC_ISPRESSED_UP(g_rc_data)){
-      duty = -3000;
+      duty = -6000;
   } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
-      duty = 3000;
+      duty = 6000;
   } else{
       duty = 0;
   }
