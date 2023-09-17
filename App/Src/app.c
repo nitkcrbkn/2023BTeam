@@ -188,7 +188,12 @@ int suspensionSystem(void){
                 else if(j==2  && i==1 && __RC_ISPRESSED_L1(g_rc_data) && DD_RCGetLY(g_rc_data)==0){
                     break;
                 }
-                trapezoidCtrl(rc_analogdata * MD_GAIN / dutyX,&g_md_h[idx+j],&tc);
+                if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
+                    trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX,&g_md_h[idx+j],&tc);
+                }
+                else{
+                    trapezoidCtrl(rc_analogdata * MD_GAIN_NORMAL / dutyX,&g_md_h[idx+j],&tc);
+                }
             }
         }
         break;
