@@ -250,7 +250,7 @@ int forwardWheelLeft(void){
 
 static
 int OtasukeUpDownSystem(void){
-  unsigned int idx = 2;
+  unsigned int idx = 4;
   int i;
   int duty = 0;
 
