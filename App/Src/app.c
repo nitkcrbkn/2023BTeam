@@ -16,12 +16,13 @@ static
 int suspensionSystem(void);
 
 static
+int OtasukeUpDownSystem(void);
+
+static
 int forwardWheelLeft(void);
 
 static
 int forwardWheelRight(void);
-
-
 
 /* 腕振り部の変数 */
 int situation = 0;
@@ -105,6 +106,10 @@ int appTask(void){
   ret = forwardWheelLeft();
   if(ret){
       return ret;
+  }
+  ret = OtasukeUpDownSystem();
+  if(ret){
+    return ret;
   }
 
     ret = forwardWheelRight();
@@ -244,6 +249,29 @@ int forwardWheelLeft(void){
 }
 
 static
+int OtasukeUpDownSystem(void){
+  unsigned int idx = 2;
+  int i;
+  int duty = 0;
+
+  const tc_const_t tc ={
+    .inc_con = 100,
+    .dec_con = 225,
+  };
+  if(__RC_ISPRESSED_UP(g_rc_data)){
+      duty = -6000;
+  } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
+      duty = 6000;
+  } else{
+      duty = 0;
+  }
+
+  trapezoidCtrl(duty,&g_md_h[idx],&tc);
+
+  return EXIT_SUCCESS;
+}
+
+static
 int forwardWheelRight(void){
     unsigned int idx=2;/*インデックス*/
     const tc_const_t tc ={
@@ -265,4 +293,3 @@ int forwardWheelRight(void){
 
     return EXIT_SUCCESS;
 }
-
