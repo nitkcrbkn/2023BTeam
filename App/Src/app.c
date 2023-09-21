@@ -99,17 +99,7 @@ int appTask(void){
     if(ret){
         return ret;
     }
-
-    ret = forwardWheelLeft();
-    if(ret){
-        return ret;
-    }
     ret = OtasukeUpDownSystem();
-    if(ret){
-        return ret;
-    }
-
-    ret = forwardWheelRight();
     if(ret){
         return ret;
     }
@@ -228,21 +218,26 @@ static
 int OtasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
-    int duty = 0;
+    int duty[2] = {0,0};
 
     const tc_const_t tc ={
             .inc_con = 100,
             .dec_con = 225,
     };
     if(__RC_ISPRESSED_UP(g_rc_data)){
-        duty = -6000;
+        duty[0]=-6000;
+        duty[1]=-3000;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
-        duty = 6000;
+        duty[0]=6000;
+        duty[1]=3000;
     } else{
-        duty = 0;
+        duty[0]=0;
+        duty[1]=0;
     }
 
-    trapezoidCtrl(duty,&g_md_h[idx],&tc);
+    for(;idx<=5;idx++){
+        trapezoidCtrl(duty[idx-4],&g_md_h[idx],&tc);
+    }
 
     return EXIT_SUCCESS;
 }
@@ -258,9 +253,9 @@ int OtasukeInclination(void){
     .dec_con = 225,
   };
 
-  if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
+  if(__RC_ISPRESSED_TRIANGLE(g_rc_data) && !__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
     duty = 1000;
-  } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
+  } else if (__RC_ISPRESSED_SQARE(g_rc_data) && !__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
     duty = -1000;
   } else {
     duty = 0;
