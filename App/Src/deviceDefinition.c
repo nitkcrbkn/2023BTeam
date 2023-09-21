@@ -26,7 +26,6 @@ DD_MDHand_t g_md_h[DD_NUM_OF_MD] = {
     .duty = 0,
     .mode = D_MMOD_FREE,
   },
-  */
 };
 #endif
 #if DD_NUM_OF_AB
