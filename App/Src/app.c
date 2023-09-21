@@ -249,7 +249,7 @@ int OtasukeUpDownSystem(void){
 
 static
 int OtasukeInclination(void){
-  unsigned int idx = 2;
+  unsigned int idx = 5;
   int i;
   int duty = 0;
 
