@@ -305,7 +305,7 @@ int forwardWheelRight(void){
 
 static
 int otasukeCatch(void){
-    unsigned int idx=2;/*インデックス*/
+    unsigned int idx=5;/*インデックス*/
     int duty;
 
     const tc_const_t tc ={
