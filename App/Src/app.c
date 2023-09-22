@@ -226,17 +226,19 @@ int OtasukeUpDownSystem(void){
     };
     if(__RC_ISPRESSED_UP(g_rc_data)){
         duty[0]=-6000;
-        duty[1]=-3000;
+        duty[1]=3000;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
         duty[0]=6000;
-        duty[1]=3000;
+        duty[1]=-3000;
     } else{
         duty[0]=0;
-        duty[1]=0;
+        duty[1]=-1;
     }
 
-    for(;idx<=5;idx++){
-        trapezoidCtrl(duty[idx-4],&g_md_h[idx],&tc);
+    for(int i=0;i<2;i++){
+        if(duty[i] != -1){
+            trapezoidCtrl(duty[i],&g_md_h[idx+i],&tc);
+        }
     }
 
     return EXIT_SUCCESS;
@@ -253,15 +255,13 @@ int OtasukeInclination(void){
     .dec_con = 225,
   };
 
-  if(__RC_ISPRESSED_TRIANGLE(g_rc_data) && !__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
-    duty = 1000;
-  } else if (__RC_ISPRESSED_SQARE(g_rc_data) && !__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
-    duty = -1000;
-  } else {
-    duty = 0;
+  if(!__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
+      if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
+          duty = -3000;
+      } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
+          duty = 3000;
+      }
+      trapezoidCtrl(duty,&g_md_h[idx],&tc);
   }
-
-  trapezoidCtrl(duty,&g_md_h[idx],&tc);
-
   return EXIT_SUCCESS;
 }
