@@ -96,17 +96,7 @@ int appTask(void){
     if(ret){
         return ret;
     }
-
-    ret = forwardWheelLeft();
-    if(ret){
-        return ret;
-    }
     ret = OtasukeUpDownSystem();
-    if(ret){
-        return ret;
-    }
-
-    ret = forwardWheelRight();
     if(ret){
         return ret;
     }
@@ -181,7 +171,7 @@ int suspensionSystem(void){
                     dutyX = 1;
                 }
 
-                if(__RC_ISPRESSED_L1(g_rc_data) || __RC_ISPRESSED_R1(g_rc_data)){
+                if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
                     dutyX *= -1;
                 }
 
