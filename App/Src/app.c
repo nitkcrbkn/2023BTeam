@@ -218,9 +218,9 @@ int OtasukeUpDownSystem(void){
             .inc_con = 100,
             .dec_con = 225,
     };
-    if(__RC_ISPRESSED_UP(g_rc_data)){
+    if(__RC_ISPRESSED_UP(g_rc_data) && _IS14_PRESSED_LOAD_TRANG()==0){
         duty = -6000;
-    } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
+    } else if(__RC_ISPRESSED_DOWN(g_rc_data) && _IS14_PRESSED_LOAD_TRANG()==0){
         duty = 6000;
     } else{
         duty = 0;
