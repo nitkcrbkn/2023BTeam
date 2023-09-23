@@ -235,7 +235,7 @@ int OtasukeUpDownSystem(void){
         duty[1]=-1;
     }
 
-    for(int i=0;i<2;i++){
+    for(int i=0;i<1;i++){
         if(duty[i] != -1){
             trapezoidCtrl(duty[i],&g_md_h[idx+i],&tc);
         }
