@@ -46,4 +46,13 @@ int appInit(void);
 #define limitB GPIO_PIN_13
 #define limitSwitch() ((MW_GPIORead(limitA,limitB)))
 
+//パンタグラフモーターのduty
+#define UPDOWN_MOTOR 6000
+
+//お助けアイテム傾斜モーター
+#define INCLINATION_MOTOR
+
+//お助けアイテムキャッチモーター
+#define CATCH_MOTOR 3000
+
 #endif

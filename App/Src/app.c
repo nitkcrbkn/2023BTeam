@@ -16,16 +16,16 @@ static
 int suspensionSystem(void);
 
 static
-int OtasukeUpDownSystem(void);
+int otasukeUpDownSystem(void);
 
 static
 int otasukeCatch(void);
 
 static
-int OtasukeInclination(void);
+int otasukeInclination(void);
 
 static
-int OtasukeUpDownSystem(void);
+int otasukeUpDownSystem(void);
 
 /* 腕振り部の変数 */
 int situation = 0;
@@ -106,12 +106,12 @@ int appTask(void){
         return ret;
     }
   
-    ret = OtasukeUpDownSystem();
+    ret = otasukeUpDownSystem();
     if(ret){
         return ret;
     }
   
-    ret = OtasukeInclination();
+    ret = otasukeInclination();
     if(ret){
       return ret;
     }
@@ -229,7 +229,7 @@ int suspensionSystem(void){
 }
 
 static
-int OtasukeUpDownSystem(void){
+int otasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
     int duty;
@@ -239,9 +239,9 @@ int OtasukeUpDownSystem(void){
             .dec_con = 225,
     };
     if(__RC_ISPRESSED_UP(g_rc_data) && !limitSwitch()){
-        duty = -6000;
+        duty = UPDOWN_MOTOR*-1;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
-        duty=6000;
+        duty=UPDOWN_MOTOR;
     } else{
         duty=0;
     }
@@ -254,7 +254,7 @@ int OtasukeUpDownSystem(void){
 }
 
 static
-int OtasukeInclination(void){
+int otasukeInclination(void){
   unsigned int idx = 5;
   int i;
   int duty = 0;
@@ -266,9 +266,9 @@ int OtasukeInclination(void){
 
   if(!__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
       if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
-          duty = -3000;
+          duty = INCLINATION_MOTOR * -1;
       } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
-          duty = 3000;
+          duty = INCLINATION_MOTOR;
       }
       trapezoidCtrl(duty,&g_md_h[idx],&tc);
   }
@@ -286,10 +286,10 @@ int otasukeCatch(void){
     };
 
     if(__RC_ISPRESSED_CIRCLE(g_rc_data)){
-        duty = 3000;
+        duty = CATCH_MOTOR;
     }
     else if(__RC_ISPRESSED_CROSS(g_rc_data)){
-        duty = -3000;
+        duty = CATCH_MOTOR * -1;
     }
     else{
         duty = 0;
