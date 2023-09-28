@@ -22,10 +22,10 @@ static
 int otasukeCatch(void);
 
 static
-int forwardWheelLeft(void);
+int OtasukeInclination(void);
 
 static
-int forwardWheelRight(void);
+int OtasukeUpDownSystem(void);
 
 /* 腕振り部の変数 */
 int situation = 0;
@@ -105,19 +105,15 @@ int appTask(void){
     if(ret){
         return ret;
     }
-
-    ret = forwardWheelLeft();
-    if(ret){
-        return ret;
-    }
+  
     ret = OtasukeUpDownSystem();
     if(ret){
         return ret;
     }
-
-    ret = forwardWheelRight();
+  
+    ret = OtasukeInclination();
     if(ret){
-        return ret;
+      return ret;
     }
 
     ret = otasukeCatch();
@@ -195,13 +191,11 @@ int suspensionSystem(void){
                     dutyX = 1;
                 }
 
+                if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
+                    dutyX *= -1;
+                }
+
                 for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
-                    if(j==2 && i==0 && __RC_ISPRESSED_R1(g_rc_data) && DD_RCGetRY(g_rc_data)==0){
-                        break;
-                    }
-                    else if(j==2  && i==1 && __RC_ISPRESSED_L1(g_rc_data) && DD_RCGetLY(g_rc_data)==0){
-                        break;
-                    }
                     if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
                         trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
                     }
@@ -235,77 +229,56 @@ int suspensionSystem(void){
 }
 
 static
-int forwardWheelLeft(void){
-    unsigned int idx=3;/*インデックス*/
-    const tc_const_t tc ={
-            .inc_con = 100,
-            .dec_con = 225,
-    };
-    int duty=0;
-
-    /*走行中前輪単独駆動はさせない*/
-    if(DD_RCGetLY(g_rc_data)==0){
-        if(__RC_ISPRESSED_L2(g_rc_data)){
-            duty = 1000;
-        }
-        else{
-            duty = 0;
-        }
-        trapezoidCtrl(duty,&g_md_h[idx],&tc);
-    }
-
-    return EXIT_SUCCESS;
-}
-
-static
 int OtasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
-    int duty = 0;
+    int duty;
 
     const tc_const_t tc ={
             .inc_con = 100,
             .dec_con = 225,
     };
-    if(__RC_ISPRESSED_UP(g_rc_data)){
+    if(__RC_ISPRESSED_UP(g_rc_data) && !limitSwitch()){
         duty = -6000;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
-        duty = 6000;
+        duty=6000;
     } else{
-        duty = 0;
+        duty=0;
     }
+    message("msg", "%d",limitSwitch());
 
-    trapezoidCtrl(duty,&g_md_h[idx],&tc);
+    for(int i=0;i<1;i++){
+        trapezoidCtrl(duty,&g_md_h[idx+i],&tc);
+    }
 
     return EXIT_SUCCESS;
 }
 
 static
-int forwardWheelRight(void){
-    unsigned int idx=2;/*インデックス*/
-    const tc_const_t tc ={
-            .inc_con = 100,
-            .dec_con = 225,
-    };
-    int duty=0;
+int OtasukeInclination(void){
+  unsigned int idx = 5;
+  int i;
+  int duty = 0;
 
-    /*走行中前輪単独駆動はさせない*/
-    if(DD_RCGetRY(g_rc_data)==0){
-        if(__RC_ISPRESSED_R2(g_rc_data)){
-            duty = -1000;
-        }
-        else{
-            duty = 0;
-        }
-        trapezoidCtrl(duty,&g_md_h[idx],&tc);
-    }
+  const tc_const_t tc ={
+    .inc_con = 100,
+    .dec_con = 225,
+  };
 
-    return EXIT_SUCCESS;
+  if(!__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
+      if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
+          duty = -3000;
+      } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
+          duty = 3000;
+      }
+      trapezoidCtrl(duty,&g_md_h[idx],&tc);
+  }
+  return EXIT_SUCCESS;
 }
 
 static
 int otasukeCatch(void){
-    unsigned int idx=5;/*インデックス*/
+    unsigned int idx=6/*インデックス*/
     int duty;
 
     const tc_const_t tc ={
@@ -327,4 +300,3 @@ int otasukeCatch(void){
 
     return EXIT_SUCCESS;
 }
-
