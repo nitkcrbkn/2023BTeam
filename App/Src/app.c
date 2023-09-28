@@ -103,14 +103,11 @@ int appTask(void){
     if(ret){
         return ret;
     }
+    ret = OtasukeInclination();
+    if(ret){
+      return ret;
+    }
 
-  ret = OtasukeInclination();
-  if(ret){
-    return ret;
-  }
-
-
-  return EXIT_SUCCESS;
     return EXIT_SUCCESS;
 }
 
@@ -181,6 +178,10 @@ int suspensionSystem(void){
                     dutyX = 1;
                 }
 
+                if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
+                    dutyX *= -1;
+                }
+
                 for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
                     if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
                         trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
@@ -224,13 +225,14 @@ int OtasukeUpDownSystem(void){
             .inc_con = 100,
             .dec_con = 225,
     };
-    if(__RC_ISPRESSED_UP(g_rc_data)){
-        duty=-6000;
+    if(__RC_ISPRESSED_UP(g_rc_data) && !limitSwitch()){
+        duty = -6000;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
         duty=6000;
     } else{
         duty=0;
     }
+    message("msg", "%d",limitSwitch());
 
     for(int i=0;i<1;i++){
         trapezoidCtrl(duty,&g_md_h[idx+i],&tc);
