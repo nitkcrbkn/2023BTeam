@@ -218,27 +218,22 @@ static
 int OtasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
-    int duty[2] = {0,0};
+    int duty;
 
     const tc_const_t tc ={
             .inc_con = 100,
             .dec_con = 225,
     };
     if(__RC_ISPRESSED_UP(g_rc_data)){
-        duty[0]=-6000;
-        duty[1]=3000;
+        duty=-6000;
     } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
-        duty[0]=6000;
-        duty[1]=-3000;
+        duty=6000;
     } else{
-        duty[0]=0;
-        duty[1]=-1;
+        duty=0;
     }
 
     for(int i=0;i<1;i++){
-        if(duty[i] != -1){
-            trapezoidCtrl(duty[i],&g_md_h[idx+i],&tc);
-        }
+        trapezoidCtrl(duty,&g_md_h[idx+i],&tc);
     }
 
     return EXIT_SUCCESS;
