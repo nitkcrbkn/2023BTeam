@@ -218,13 +218,14 @@ int OtasukeUpDownSystem(void){
             .inc_con = 100,
             .dec_con = 225,
     };
-    if(__RC_ISPRESSED_UP(g_rc_data) && _IS14_PRESSED_LOAD_TRANG()==0){
+    if(__RC_ISPRESSED_UP(g_rc_data) && !limitSwitch()){
         duty = -6000;
-    } else if(__RC_ISPRESSED_DOWN(g_rc_data) && _IS14_PRESSED_LOAD_TRANG()==0){
+    } else if(__RC_ISPRESSED_DOWN(g_rc_data)){
         duty = 6000;
     } else{
         duty = 0;
     }
+    message("msg", "%d",limitSwitch());
 
     trapezoidCtrl(duty,&g_md_h[idx],&tc);
 
