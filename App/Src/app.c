@@ -278,7 +278,7 @@ int OtasukeInclination(void){
 
 static
 int otasukeCatch(void){
-    unsigned int idx=6/*インデックス*/
+    unsigned int idx=6;/*インデックス*/
     int duty;
 
     const tc_const_t tc ={
