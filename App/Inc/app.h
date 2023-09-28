@@ -41,4 +41,9 @@ int appInit(void);
 #define ARM1_DUTY 4000
 #define ARM2_DUTY 4000
 
+//リミットスイッチ関連
+#define limitA GPIOBID
+#define limitB GPIO_PIN_13
+#define limitSwitch() ((MW_GPIORead(limitA,limitB)))
+
 #endif
