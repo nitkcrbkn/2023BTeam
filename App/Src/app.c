@@ -245,7 +245,6 @@ int OtasukeUpDownSystem(void){
     } else{
         duty=0;
     }
-    message("msg", "%d",limitSwitch());
 
     for(int i=0;i<1;i++){
         trapezoidCtrl(duty,&g_md_h[idx+i],&tc);
@@ -287,10 +286,10 @@ int otasukeCatch(void){
     };
 
     if(__RC_ISPRESSED_CIRCLE(g_rc_data)){
-        duty = 1000;
+        duty = 3000;
     }
     else if(__RC_ISPRESSED_CROSS(g_rc_data)){
-        duty = -1000;
+        duty = -3000;
     }
     else{
         duty = 0;
