@@ -182,13 +182,13 @@ int suspensionSystem(void){
                 int dutyX;
 
                 if(__RC_ISPRESSED_L1(g_rc_data) && __RC_ISPRESSED_R1(g_rc_data)){
-                    dutyX = 4;
+                    dutyX = SLOW_SPEED;
                 }
                 else if(__RC_ISPRESSED_L1(g_rc_data) || __RC_ISPRESSED_R1(g_rc_data)){
-                    dutyX = 2;
+                    dutyX = MEDIUM_SPEED;
                 }
                 else{
-                    dutyX = 1;
+                    dutyX = NORMAL_SPEED;
                 }
 
                 if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
@@ -232,7 +232,7 @@ static
 int otasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
-    int duty;
+    int duty,dutyx;
 
     const tc_const_t tc ={
             .inc_con = 100,
@@ -246,8 +246,18 @@ int otasukeUpDownSystem(void){
         duty=0;
     }
 
+    if(__RC_ISPRESSED_L1(g_rc_data) && __RC_ISPRESSED_R1(g_rc_data)){
+        dutyX = SLOW_SPEED;
+    }
+    else if(__RC_ISPRESSED_L1(g_rc_data) || __RC_ISPRESSED_R1(g_rc_data)){
+        dutyX = MEDIUM_SPEED;
+    }
+    else{
+        dutyX = NORMAL_SPEED;
+    }
+
     for(int i=0;i<1;i++){
-        trapezoidCtrl(duty,&g_md_h[idx+i],&tc);
+        trapezoidCtrl(duty/dutyX,&g_md_h[idx+i],&tc);
     }
 
     return EXIT_SUCCESS;
@@ -257,12 +267,22 @@ static
 int otasukeInclination(void){
   unsigned int idx = 5;
   int i;
-  int duty = 0;
+  int duty = 0,dutyX;
 
   const tc_const_t tc ={
     .inc_con = 100,
     .dec_con = 225,
   };
+
+  if(__RC_ISPRESSED_L1(g_rc_data) && __RC_ISPRESSED_R1(g_rc_data)){
+     dutyX = SLOW_SPEED;
+    }
+  else if(__RC_ISPRESSED_L1(g_rc_data) || __RC_ISPRESSED_R1(g_rc_data)){
+    dutyX = MEDIUM_SPEED;
+  }
+  else{
+    dutyX = NORMAL_SPEED;
+  }
 
   if(!__RC_ISPRESSED_UP(g_rc_data) && !__RC_ISPRESSED_DOWN(g_rc_data)){
       if(__RC_ISPRESSED_TRIANGLE(g_rc_data)){
@@ -270,7 +290,7 @@ int otasukeInclination(void){
       } else if (__RC_ISPRESSED_SQARE(g_rc_data)){
           duty = INCLINATION_MOTOR;
       }
-      trapezoidCtrl(duty,&g_md_h[idx],&tc);
+      trapezoidCtrl(duty/dutyX,&g_md_h[idx],&tc);
   }
   return EXIT_SUCCESS;
 }
@@ -278,7 +298,7 @@ int otasukeInclination(void){
 static
 int otasukeCatch(void){
     unsigned int idx=6;/*インデックス*/
-    int duty;
+    int duty,dutyX;
 
     const tc_const_t tc ={
             .inc_con = 100,
@@ -295,7 +315,17 @@ int otasukeCatch(void){
         duty = 0;
     }
 
-    trapezoidCtrl(duty,&g_md_h[idx],&tc);
+    if(__RC_ISPRESSED_L1(g_rc_data) && __RC_ISPRESSED_R1(g_rc_data)){
+        dutyX = SLOW_SPEED;
+    }
+    else if(__RC_ISPRESSED_L1(g_rc_data) || __RC_ISPRESSED_R1(g_rc_data)){
+        dutyX = MEDIUM_SPEED;
+    }
+    else{
+        dutyX = NORMAL_SPEED;
+    }
+
+    trapezoidCtrl(duty/dutyX,&g_md_h[idx],&tc);
 
     return EXIT_SUCCESS;
 }
