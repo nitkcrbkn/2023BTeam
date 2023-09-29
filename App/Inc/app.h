@@ -50,7 +50,7 @@ int appInit(void);
 #define UPDOWN_MOTOR 6000
 
 //お助けアイテム傾斜モーター
-#define INCLINATION_MOTOR
+#define INCLINATION_MOTOR 3000
 
 //お助けアイテムキャッチモーター
 #define CATCH_MOTOR 3000
