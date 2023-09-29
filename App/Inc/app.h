@@ -4,7 +4,7 @@
 /*NO Device mode*/
 #define _NO_DEVICE 0
 
-#define DD_NUM_OF_MD 2
+#define DD_NUM_OF_MD 7
 #define DD_NUM_OF_AB 0
 #define DD_NUM_OF_SV 0
 
@@ -26,8 +26,8 @@ int appInit(void);
 //#define MECHA1_MD4 4
  
 #define CENTRAL_THRESHOLD 0
-
-#define MD_GAIN (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX / 2 )
+#define MD_GAIN_NORMAL (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX / 2 )
+#define MD_GAIN_MAX (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX)
 
 /* 腕振り用モータのduty */
 #define _ARM_DUTY (DD_MD_MAX_DUTY-1)
@@ -40,5 +40,19 @@ int appInit(void);
 //arm関連
 #define ARM1_DUTY 4000
 #define ARM2_DUTY 4000
+
+//リミットスイッチ関連
+#define limitA GPIOBID
+#define limitB GPIO_PIN_13
+#define limitSwitch() ((MW_GPIORead(limitA,limitB)))
+
+//パンタグラフモーターのduty
+#define UPDOWN_MOTOR 6000
+
+//お助けアイテム傾斜モーター
+#define INCLINATION_MOTOR 3000
+
+//お助けアイテムキャッチモーター
+#define CATCH_MOTOR 3000
 
 #endif
