@@ -55,4 +55,9 @@ int appInit(void);
 //お助けアイテムキャッチモーター
 #define CATCH_MOTOR 3000
 
+//低速モード倍率(1/x)
+#define NORMAL_SPEED 1
+#define MEDIUM_SPEED 2
+#define SLOW_SPEED 4
+
 #endif
