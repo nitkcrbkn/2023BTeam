@@ -232,7 +232,7 @@ static
 int otasukeUpDownSystem(void){
     unsigned int idx = 4;
     int i;
-    int duty,dutyx;
+    int duty,dutyX;
 
     const tc_const_t tc ={
             .inc_con = 100,
