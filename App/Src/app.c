@@ -192,17 +192,29 @@ int suspensionSystem(void){
                 }
 
                 if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
-                    dutyX *= -1;
+                    //dutyX *= -1;
+                    idx = (idx-1)*-1; //1と0を入れ替え
+                    for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
+                        if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
+                            trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
+                        }
+                        else{
+                            trapezoidCtrl(rc_analogdata * MD_GAIN_NORMAL / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
+                        }
+                    }
+                }
+                else{
+                    for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
+                        if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
+                            trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
+                        }
+                        else{
+                            trapezoidCtrl(rc_analogdata * MD_GAIN_NORMAL / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
+                        }
+                    }
                 }
 
-                for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
-                    if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
-                        trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
-                    }
-                    else{
-                        trapezoidCtrl(rc_analogdata * MD_GAIN_NORMAL / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
-                    }
-                }
+
             }
             break;
 
