@@ -24,9 +24,6 @@ int otasukeCatch(void);
 static
 int otasukeInclination(void);
 
-static
-int otasukeUpDownSystem(void);
-
 /* 腕振り部の変数 */
 int situation = 0;
 int judgepush = 0;
@@ -145,19 +142,7 @@ int suspensionSystem(void){
     }
 
 
-    if(__RC_ISPRESSED_TRIANGLE(g_rc_data) && checkpush == 1 && !__RC_ISPRESSED_CROSS(g_rc_data)){
-
-        switch(mode){
-            case 1:
-                mode = 0;
-                break;
-            case 0:
-                mode = 1;
-                break;
-        }
-
-        checkpush = 0;
-    }
+    mode = 0;
 
     switch(mode){
         case 0:

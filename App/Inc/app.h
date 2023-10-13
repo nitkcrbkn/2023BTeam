@@ -49,11 +49,11 @@ int appInit(void);
 //パンタグラフモーターのduty
 #define UPDOWN_MOTOR 6000
 
-//お助けアイテム傾斜モーター
+//お助けアイテム傾斜モーターのduty
 #define INCLINATION_MOTOR 3000
 
-//お助けアイテムキャッチモーター
-#define CATCH_MOTOR 3000
+//お助けアイテムキャッチモーターのduty
+#define CATCH_MOTOR 9000
 
 //低速モード倍率(1/x)
 #define NORMAL_SPEED 1
