@@ -53,7 +53,7 @@ int appInit(void);
 #define INCLINATION_MOTOR 3000
 
 //お助けアイテムキャッチモーター
-#define CATCH_MOTOR 3000
+#define CATCH_MOTOR 9000
 
 //低速モード倍率(1/x)
 #define NORMAL_SPEED 1
