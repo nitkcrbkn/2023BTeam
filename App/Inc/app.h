@@ -26,7 +26,7 @@ int appInit(void);
 //#define MECHA1_MD4 4
  
 #define CENTRAL_THRESHOLD 0
-#define MD_GAIN_NORMAL (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX / 2 )
+#define MD_GAIN_NORMAL (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX * 3 / 4 )
 #define MD_GAIN_MAX (DD_MD_MAX_DUTY  / DD_RC_ANALOG_MAX)
 
 /* 腕振り用モータのduty */
@@ -49,11 +49,11 @@ int appInit(void);
 //パンタグラフモーターのduty
 #define UPDOWN_MOTOR 6000
 
-//お助けアイテム傾斜モーター
+//お助けアイテム傾斜モーターのduty
 #define INCLINATION_MOTOR 3000
 
-//お助けアイテムキャッチモーター
-#define CATCH_MOTOR 3000
+//お助けアイテムキャッチモーターのduty
+#define CATCH_MOTOR 9000
 
 //低速モード倍率(1/x)
 #define NORMAL_SPEED 1
