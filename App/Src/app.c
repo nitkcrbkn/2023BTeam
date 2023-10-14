@@ -175,7 +175,7 @@ int suspensionSystem(void){
                 else{
                     dutyX = NORMAL_SPEED;
                 }
-
+/*バックモード無効化
                 if(__RC_ISPRESSED_L2(g_rc_data) || __RC_ISPRESSED_R2(g_rc_data)){
                     //dutyX *= -1;
                     idx = (idx-1)*-1; //1と0を入れ替え
@@ -188,16 +188,16 @@ int suspensionSystem(void){
                         }
                     }
                 }
-                else{
+                else{*/
                     for(int j=0;j<=2;j+=2){ //2つのタイヤを回転させるためにfor文
-                        if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){
+                        //if(DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) >= -10 && DD_RCGetRY(g_rc_data)-DD_RCGetLY(g_rc_data) <= 10){  自動原則無効化
                             trapezoidCtrl(rc_analogdata * MD_GAIN_MAX / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
-                        }
+                        /*}
                         else{
                             trapezoidCtrl(rc_analogdata * MD_GAIN_NORMAL / dutyX / dutyDifference[i][j] * 100,&g_md_h[idx+j],&tc);
-                        }
+                        }*/
                     }
-                }
+                //}
 
 
             }
